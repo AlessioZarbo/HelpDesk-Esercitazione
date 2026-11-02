@@ -181,6 +181,16 @@
             "related": ".xml"
           }
         }
+      },
+      "HelpDesk.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/HelpDesk.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HelpDesk.Domain.dll": {}
+        }
       }
     }
   },
@@ -408,11 +418,17 @@
         "system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
         "system.identitymodel.tokens.jwt.nuspec"
       ]
+    },
+    "HelpDesk.Domain/1.0.0": {
+      "type": "project",
+      "path": "../HelpDesk.Domain/HelpDesk.Domain.csproj",
+      "msbuildProject": "../HelpDesk.Domain/HelpDesk.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
       "HelpDesk.Auth >= 1.0.0",
+      "HelpDesk.Domain >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.14"
     ]
   },
@@ -443,7 +459,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/HelpDesk.Domain.csproj": {
+              "projectPath": "/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/HelpDesk.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
