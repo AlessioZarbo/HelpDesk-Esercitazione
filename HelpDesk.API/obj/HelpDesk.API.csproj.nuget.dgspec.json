@@ -47,9 +47,13 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "HelpDesk.Auth": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[10.0.14, )"
             }
           },
           "imports": [
