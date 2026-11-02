@@ -17,10 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\HelpDesk.Domain\HelpDesk.Domain.csproj" />
       <ProjectReference Include="..\HelpDesk.Infrastructure\HelpDesk.Infrastructure.csproj" />
     </ItemGroup>
