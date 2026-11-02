@@ -1,0 +1,17 @@
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Infrastructure.deps.json
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Infrastructure.runtimeconfig.json
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Infrastructure.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Infrastructure.pdb
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.csproj.AssemblyReference.cache
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.AssemblyInfoInputs.cache
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.AssemblyInfo.cs
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/refint/HelpDesk.Infrastructure.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.pdb
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.genruntimeconfig.cache
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/ref/HelpDesk.Infrastructure.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Domain.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Domain.pdb
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.9093FE75.Up2Date

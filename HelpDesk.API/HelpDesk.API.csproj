@@ -9,6 +9,11 @@
     <ItemGroup>
         <PackageReference Include="HelpDesk.Auth" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.14" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
     </ItemGroup>
 
     <ItemGroup>
@@ -17,6 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\HelpDesk.Domain\HelpDesk.Domain.csproj" />
+      <ProjectReference Include="..\HelpDesk.Infrastructure\HelpDesk.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
