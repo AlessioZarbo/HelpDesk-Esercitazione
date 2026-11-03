@@ -40,7 +40,7 @@ public class TicketResponseDto {
 	/// <summary>
 	/// Gets or sets the user who assigned the ticket.
 	/// </summary>
-	public string? AssignedByUserId { get; set; }
+	public string? AssignedToUserId { get; set; }
 
 	/// <summary>
 	/// Gets or sets the date and time when the ticket was created.

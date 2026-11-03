@@ -14,9 +14,11 @@
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.18.7" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\HelpDesk.Application\HelpDesk.Application.csproj" />
       <ProjectReference Include="..\HelpDesk.Domain\HelpDesk.Domain.csproj" />
       <ProjectReference Include="..\HelpDesk.Infrastructure\HelpDesk.Infrastructure.csproj" />
     </ItemGroup>

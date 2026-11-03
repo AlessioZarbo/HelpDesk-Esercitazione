@@ -169,3 +169,6 @@
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/runtimes/win-x86/native/msalruntime_x86.dll
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/HelpDesk.Infrastructure.dll
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/HelpDesk.Infrastructure.pdb
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/HelpDesk.Application.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/HelpDesk.Application.pdb
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/Scalar.AspNetCore.dll

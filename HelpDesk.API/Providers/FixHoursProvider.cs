@@ -6,7 +6,7 @@ namespace HelpDesk.API.Providers;
 /// <summary>
 /// Provides the number of hours to fix a ticket based on its priority, using configuration settings.
 /// </summary>
-public class ConfigFixHoursProvider : IFixHoursProvider {
+public class FixHoursProvider : IFixHoursProvider {
 
 	/// <summary>
 	/// Gets the configuration instance used to retrieve fix hours for different priorities.
@@ -14,10 +14,10 @@ public class ConfigFixHoursProvider : IFixHoursProvider {
 	private readonly IConfiguration _configuration;
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="ConfigFixHoursProvider"/> class with the specified configuration.
+	/// Initializes a new instance of the <see cref="FixHoursProvider"/> class with the specified configuration.
 	/// </summary>
 	/// <param name="configuration"></param>
-	public ConfigFixHoursProvider(IConfiguration configuration)
+	public FixHoursProvider(IConfiguration configuration)
 	{
 		_configuration = configuration;
 	}

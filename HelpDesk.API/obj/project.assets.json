@@ -901,6 +901,22 @@
           }
         }
       },
+      "Scalar.AspNetCore/2.18.7": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "System.ClientModel/1.8.0": {
         "type": "package",
         "dependencies": {
@@ -1131,6 +1147,20 @@
         },
         "build": {
           "buildTransitive/net8.0/_._": {}
+        }
+      },
+      "HelpDesk.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "HelpDesk.Domain": "1.0.0",
+          "HelpDesk.Infrastructure": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/HelpDesk.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HelpDesk.Application.dll": {}
         }
       },
       "HelpDesk.Domain/1.0.0": {
@@ -2898,6 +2928,25 @@
         "packageIcon.png"
       ]
     },
+    "Scalar.AspNetCore/2.18.7": {
+      "sha512": "JrNu0Sm4TVeJ//ptvAS3yRbT0oobfR8qp0ecf3HIS9zX4V7uSABr+VYEyWT7uyXjhN2ZTrZ/cpwKv7zHjlK8Gg==",
+      "type": "package",
+      "path": "scalar.aspnetcore/2.18.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net10.0/Scalar.AspNetCore.dll",
+        "lib/net10.0/Scalar.AspNetCore.xml",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.2.18.7.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
     "System.ClientModel/1.8.0": {
       "sha512": "AqRzhn0v29GGGLj/Z6gKq4lGNtvPHT4nHdG5PDJh9IfVjv/nYUVmX11hwwws1vDFeIAzrvmn0dPu8IjLtu6fAw==",
       "type": "package",
@@ -3253,6 +3302,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "HelpDesk.Application/1.0.0": {
+      "type": "project",
+      "path": "../HelpDesk.Application/HelpDesk.Application.csproj",
+      "msbuildProject": "../HelpDesk.Application/HelpDesk.Application.csproj"
+    },
     "HelpDesk.Domain/1.0.0": {
       "type": "project",
       "path": "../HelpDesk.Domain/HelpDesk.Domain.csproj",
@@ -3266,12 +3320,14 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "HelpDesk.Application >= 1.0.0",
       "HelpDesk.Auth >= 1.0.0",
       "HelpDesk.Domain >= 1.0.0",
       "HelpDesk.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.14",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.14",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.14"
+      "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.14",
+      "Scalar.AspNetCore >= 2.18.7"
     ]
   },
   "packageFolders": {
@@ -3302,6 +3358,9 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
+            "/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Application/HelpDesk.Application.csproj": {
+              "projectPath": "/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Application/HelpDesk.Application.csproj"
+            },
             "/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/HelpDesk.Domain.csproj": {
               "projectPath": "/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/HelpDesk.Domain.csproj"
             },
@@ -3344,6 +3403,10 @@
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[10.0.14, )"
+          },
+          "Scalar.AspNetCore": {
+            "target": "Package",
+            "version": "[2.18.7, )"
           }
         },
         "imports": [
