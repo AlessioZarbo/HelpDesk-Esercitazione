@@ -29,16 +29,6 @@ public class TicketController : ControllerBase {
 	}
 
 	/// <summary>
-	/// Gets all tickets.
-	/// </summary>
-	/// <returns>The list of all tickets.</returns>
-	[HttpGet]
-	public async Task<IEnumerable<TicketResponseDto>> GetAllAsync() {
-
-		return await _ticketService.GetAllAsync();
-	}
-
-	/// <summary>
 	/// Creates a new ticket.
 	/// </summary>
 	/// <param name="ticketRequestDto"></param>
@@ -52,6 +42,21 @@ public class TicketController : ControllerBase {
 
 		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 		var ticket = await _ticketService.CreateAsync(ticketRequestDto, userId, cancellationToken);
-		return StatusCode(201, ticket);
+		return StatusCode(201, ticket); // TODO Implementare la parte relativa all'header Location: /api/v1/tickets/42 (REQUISITI: GetById funzionante)
+	}
+
+	/// <summary>
+	/// Gets all tickets for the authenticated user or operator.
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	[HttpGet]
+	[Authorize(Roles = "User,Operator")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken) {
+
+		var isOperator = User.IsInRole("Operator");
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+		return Ok(await _ticketService.GetAllAsync(isOperator, userId, cancellationToken));
 	}
 }

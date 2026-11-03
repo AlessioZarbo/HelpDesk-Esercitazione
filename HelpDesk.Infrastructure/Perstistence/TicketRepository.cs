@@ -32,10 +32,24 @@ public class TicketRepository : ITicketRepository {
 	/// <summary>
 	/// Gets all tickets asynchronously.
 	/// </summary>
+	/// <param name="cancellationToken"></param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the list of all tickets.</returns>
-	/// <exception cref="NotImplementedException"></exception>
-	public async Task<List<Ticket>> GetAllAsync() {
-		return await _db.Tickets.ToListAsync();
+	public async Task<List<Ticket>> GetAllAsync(CancellationToken cancellationToken) {
+
+		return await _db.Tickets.ToListAsync(cancellationToken);
+	}
+
+	/// <summary>
+	/// Gets all tickets for a specific user asynchronously.
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<List<Ticket>> GetAllByUserIdAsync(string userId, CancellationToken cancellationToken) {
+
+		return await _db.Tickets
+			.Where(t => t.CreatedByUserId == userId)
+			.ToListAsync(cancellationToken);
 	}
 
 	public Task<Ticket> GetByIdAsync(int id) {

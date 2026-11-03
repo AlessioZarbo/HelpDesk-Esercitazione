@@ -1,3 +1,4 @@
+using HelpDesk.Application.Mapper;
 using HelpDesk.Application.Services;
 using HelpDesk.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ public static class DependencyInjection {
 		IConfiguration configuration) {
 
 		services.AddScoped<ITicketService, TicketService>();
+		services.AddScoped<TicketMapper>();
 
 		return services;
 	}

@@ -1,4 +1,5 @@
 using HelpDesk.Application.Dto.Ticket;
+using HelpDesk.Application.Mapper;
 using HelpDesk.Domain.Entities;
 using HelpDesk.Domain.Enums;
 using HelpDesk.Domain.Interfaces;
@@ -14,31 +15,41 @@ public class TicketService : ITicketService {
 	private readonly ITicketRepository _ticketRepository;
 
 	/// <summary>
-	/// The provider used for calculating fix hours for tickets.
+	/// The mapper used for converting between ticket entities and DTOs.
 	/// </summary>
-	private readonly IFixHoursProvider _fixHoursProvider;
+	private readonly TicketMapper _mapper;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TicketService"/> class with the specified ticket repository.
 	/// </summary>
 	/// <param name="ticketRepository"></param>
-	/// <param name="fixHoursProvider"></param>
-	public TicketService(ITicketRepository ticketRepository, IFixHoursProvider fixHoursProvider) {
+	/// <param name="mapper"></param>
+	public TicketService(ITicketRepository ticketRepository, TicketMapper mapper) {
 
-		_fixHoursProvider = fixHoursProvider;
 		_ticketRepository = ticketRepository;
+		_mapper = mapper;
 	}
 
 	/// <summary>
 	/// Gets all tickets asynchronously.
 	/// </summary>
+	/// <param name="isOperator"></param>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the list of all tickets.</returns>
-	public Task<IEnumerable<TicketResponseDto>> GetAllAsync() {
+	public async Task<List<TicketSimpleResponseDto>> GetAllAsync(bool isOperator, string? userId, CancellationToken cancellationToken) {
 
-		return _ticketRepository.GetAllAsync().ContinueWith(t => t.Result.Select(MapToDto));
+		if (!isOperator && string.IsNullOrEmpty(userId))
+			throw new ArgumentException("User ID must be provided for non-operator users.");
+
+		var tickets = isOperator
+			? await _ticketRepository.GetAllAsync(cancellationToken)
+			: await _ticketRepository.GetAllByUserIdAsync(userId!, cancellationToken);
+
+		return tickets.Select(t => _mapper.MapToSimpleDto(t)).ToList();
 	}
 
-	public Task<TicketResponseDto> GetByIdAsync(int id) {
+	public Task<TicketSimpleResponseDto> GetByTicketIdAsync(int id) {
 		throw new NotImplementedException();
 	}
 
@@ -51,49 +62,11 @@ public class TicketService : ITicketService {
 	/// <returns></returns>
 	public async Task<TicketResponseDto> CreateAsync(TicketRequestDto ticket, string? userId, CancellationToken cancellationToken) {
 
-		var ticketResponse = await _ticketRepository.CreateAsync(MapToEntity(ticket, userId), cancellationToken);
-		return MapToDto(ticketResponse);
+		var ticketResponse = await _ticketRepository.CreateAsync(_mapper.MapToEntity(ticket, userId), cancellationToken);
+		return _mapper.MapToDto(ticketResponse);
 	}
 
 	public Task SetStatusAsync(string ticketId, Status status) {
 		throw new NotImplementedException();
-	}
-
-	/// <summary>
-	/// Maps a <see cref="Ticket"/> entity to a <see cref="TicketResponseDto"/>.
-	/// </summary>
-	/// <param name="entity"></param>
-	/// <returns></returns>
-	public static TicketResponseDto MapToDto(Ticket entity) {
-
-		return new TicketResponseDto() {
-			Id = entity.TicketId,
-			Title = entity.Title,
-			Description = entity.Description,
-			Priority = entity.Priority,
-			Status = entity.Status,
-			CreatedByUserId = entity.CreatedByUserId,
-			AssignedToUserId = entity.AssignedToUserId,
-			CreatedAt = entity.CreatedAt,
-			DueDate = entity.DueDate,
-		};
-	}
-
-	/// <summary>
-	/// Maps a <see cref="TicketRequestDto"/> to a <see cref="Ticket"/> entity.
-	/// </summary>
-	/// <param name="dto"></param>
-	/// <param name="userId"></param>
-	/// <returns></returns>
-	public Ticket MapToEntity(TicketRequestDto dto, string? userId) {
-
-		var ticket = Ticket.Create(
-			title: dto.Title,
-			description: dto.Description,
-			priority: dto.Priority,
-			userId: userId,
-			fixHours: _fixHoursProvider // Accedendo ai dati di istanza non può essere statico
-		);
-		return ticket;
 	}
 }

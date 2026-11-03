@@ -8,8 +8,17 @@ public interface ITicketRepository {
 	/// <summary>
 	/// Gets all tickets asynchronously
 	/// </summary>
+	/// <param name="cancellationToken"></param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the list of all tickets.</returns>
-	public Task<List<Ticket>> GetAllAsync();
+	public Task<List<Ticket>> GetAllAsync(CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Gets all tickets for a specific user asynchronously
+	/// </summary>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public Task<List<Ticket>> GetAllByUserIdAsync(string userId, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Gets a ticket by its ID asynchronously
