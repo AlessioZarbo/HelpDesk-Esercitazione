@@ -172,3 +172,4 @@
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/HelpDesk.Application.dll
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/HelpDesk.Application.pdb
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/bin/Debug/net10.0/Scalar.AspNetCore.dll
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.API/obj/Debug/net10.0/HelpDesk.API.sourcelink.json

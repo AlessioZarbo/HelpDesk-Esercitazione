@@ -26,8 +26,10 @@ public interface ITicketService {
 	/// Creates a new ticket asynchronously
 	/// </summary>
 	/// <param name="ticket"></param>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task CreateAsync(TicketRequestDto ticket);
+	Task<TicketResponseDto> CreateAsync(TicketRequestDto ticket, string? userId, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Sets the status of a ticket asynchronously

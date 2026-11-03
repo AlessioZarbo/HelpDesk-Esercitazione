@@ -60,8 +60,6 @@ public class Ticket {
 	/// <param name="description"></param>
 	/// <param name="priority"></param>
 	/// <param name="userId"></param>
-	/// <param name="assignedUserId"></param>
-	/// <param name="createdAt"></param>
 	/// <param name="fixHours"></param>
 	/// <returns></returns>
 	/// <exception cref="ArgumentException"></exception>
@@ -69,9 +67,7 @@ public class Ticket {
 		string title,
 		string description,
 		Priority priority,
-		string userId,
-		string? assignedUserId,
-		DateTime createdAt,
+		string? userId,
 		IFixHoursProvider fixHours)
 	{
 		if (string.IsNullOrWhiteSpace(title)) {
@@ -86,16 +82,17 @@ public class Ticket {
 
 		// Calculate the due date based on the priority and fix hours
 		var fixHour = fixHours.GetHours(priority);
+		var now = DateTime.UtcNow;
 
 		return new Ticket {
 			Title = title,
 			Description = description,
 			Priority = priority,
 			CreatedByUserId = userId,
-			AssignedToUserId = assignedUserId,
-			Status = assignedUserId != null ? Enums.Status.InProgress : Status.Open,
-			CreatedAt = createdAt,
-			DueDate = createdAt.AddHours(fixHour)
+			AssignedToUserId = null,
+			Status = Enums.Status.Open,
+			CreatedAt = now,
+			DueDate = now.AddHours(fixHour)
 		};
 	}
 }

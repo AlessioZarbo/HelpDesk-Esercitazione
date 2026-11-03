@@ -15,3 +15,4 @@
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Domain.dll
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/bin/Debug/net10.0/HelpDesk.Domain.pdb
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.9093FE75.Up2Date
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Infrastructure/obj/Debug/net10.0/HelpDesk.Infrastructure.sourcelink.json

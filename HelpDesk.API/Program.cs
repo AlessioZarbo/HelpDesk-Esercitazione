@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HelpDesk.API.Providers;
 using HelpDesk.Application;
 using HelpDesk.Auth;
@@ -6,7 +7,20 @@ using HelpDesk.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+
+// Permette di popolare il campo dell'enum in formato string
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+	options.SerializerOptions.Converters.Add(
+		new JsonStringEnumConverter(allowIntegerValues: false));
+});
+builder.Services.AddControllers()
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.Converters.Add(
+			new JsonStringEnumConverter(allowIntegerValues: false));
+	});
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddHelpDeskJwtAuth(builder.Configuration);

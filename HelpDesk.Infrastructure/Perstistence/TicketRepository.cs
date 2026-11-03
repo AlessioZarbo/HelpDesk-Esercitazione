@@ -14,11 +14,19 @@ public class TicketRepository : ITicketRepository {
 	private readonly HelpDeskDbContext _db;
 
 	/// <summary>
+	/// The unit of work used for managing transactions and saving changes to the database.
+	/// </summary>
+	private readonly IUnitOfWork _unitOfWork;
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="TicketRepository"/> class with the specified database context.
 	/// </summary>
 	/// <param name="db">The database context to use.</param>
-	public TicketRepository(HelpDeskDbContext db) {
+	/// <param name="unitOfWork">The unit of work to use.</param>
+	public TicketRepository(HelpDeskDbContext db, IUnitOfWork unitOfWork) {
+
 		_db = db;
+		_unitOfWork = unitOfWork;
 	}
 
 	/// <summary>
@@ -34,8 +42,16 @@ public class TicketRepository : ITicketRepository {
 		throw new NotImplementedException();
 	}
 
-	public Task CreateAsync(Ticket ticket) {
-		throw new NotImplementedException();
+	/// <summary>
+	/// Creates a new ticket asynchronously.
+	/// </summary>
+	/// <param name="ticket"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<Ticket> CreateAsync(Ticket ticket, CancellationToken cancellationToken) {
+		_db.Add(ticket);
+		await _unitOfWork.SaveChangesAsync(cancellationToken);
+		return await Task.FromResult(ticket);
 	}
 
 	public Task SetStatusAsync(string ticketId, Status status) {

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HelpDesk.Domain.Enums;
 
 namespace HelpDesk.Application.Dto.Ticket;

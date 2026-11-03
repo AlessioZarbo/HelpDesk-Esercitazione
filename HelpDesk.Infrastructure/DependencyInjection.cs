@@ -12,6 +12,7 @@ public static class DependencyInjection {
 		IConfiguration configuration) {
 
 		services.AddScoped<ITicketRepository, TicketRepository>();
+		services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 		services.AddSqlServer<HelpDeskDbContext>(
 			configuration.GetConnectionString("Docker"));

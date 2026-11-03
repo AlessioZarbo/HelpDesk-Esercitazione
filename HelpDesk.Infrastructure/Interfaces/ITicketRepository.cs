@@ -22,8 +22,9 @@ public interface ITicketRepository {
 	///	Creates a new ticket asynchronously
 	/// </summary>
 	/// <param name="ticket"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public Task CreateAsync(Ticket ticket);
+	public Task<Ticket> CreateAsync(Ticket ticket, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Sets the status of a ticket asynchronously
