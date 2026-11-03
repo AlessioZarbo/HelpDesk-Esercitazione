@@ -59,4 +59,23 @@ public class TicketController : ControllerBase {
 		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 		return Ok(await _ticketService.GetAllAsync(isOperator, userId, cancellationToken));
 	}
+
+	/// <summary>
+	/// Gets a ticket by its ID.
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	[HttpGet("{id:int}")]
+	[Authorize(Roles = "User,Operator")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> GetByTicketIdAsync([FromRoute] int id, CancellationToken cancellationToken) {
+
+		var isOperator = User.IsInRole("Operator");
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+		var ticket = await _ticketService.GetByTicketIdAsync(id, isOperator, userId, cancellationToken);
+
+		return ticket != null ? Ok(ticket) : NotFound();
+	}
 }

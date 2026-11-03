@@ -18,14 +18,24 @@ public interface ITicketRepository {
 	/// <param name="userId"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public Task<List<Ticket>> GetAllByUserIdAsync(string userId, CancellationToken cancellationToken);
+	public Task<List<Ticket>> GetAllAsync(string userId, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Gets a ticket by its ID asynchronously
 	/// </summary>
-	/// <param name="id"></param>
+	/// <param name="ticketId"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the ticket with the specified ID.</returns>
-	public Task<Ticket> GetByIdAsync(int id);
+	public Task<Ticket?> GetByTicketIdAsync(int ticketId, CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Gets a ticket by its ID and user ID asynchronously
+	/// </summary>
+	/// <param name="ticketId"></param>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public Task<Ticket?> GetByTicketIdAsync(int ticketId, string userId, CancellationToken cancellationToken);
 
 	/// <summary>
 	///	Creates a new ticket asynchronously

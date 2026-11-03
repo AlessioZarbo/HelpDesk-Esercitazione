@@ -22,8 +22,11 @@ public interface ITicketService {
 	/// Gets a ticket by its ID asynchronously
 	/// </summary>
 	/// <param name="id"></param>
+	/// <param name="isOperator"></param>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<TicketSimpleResponseDto> GetByTicketIdAsync(int id);
+	Task<TicketResponseDto?> GetByTicketIdAsync(int id, bool isOperator, string? userId, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Creates a new ticket asynchronously

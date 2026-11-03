@@ -45,15 +45,38 @@ public class TicketRepository : ITicketRepository {
 	/// <param name="userId"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public async Task<List<Ticket>> GetAllByUserIdAsync(string userId, CancellationToken cancellationToken) {
+	public async Task<List<Ticket>> GetAllAsync(string userId, CancellationToken cancellationToken) {
 
 		return await _db.Tickets
 			.Where(t => t.CreatedByUserId == userId)
 			.ToListAsync(cancellationToken);
 	}
 
-	public Task<Ticket> GetByIdAsync(int id) {
-		throw new NotImplementedException();
+	/// <summary>
+	/// Gets a ticket by its ID asynchronously.
+	/// </summary>
+	/// <param name="ticketId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<Ticket?> GetByTicketIdAsync(int ticketId, CancellationToken cancellationToken) {
+
+		return await _db.Tickets
+			.Where(t => t.TicketId == ticketId)
+			.FirstOrDefaultAsync(cancellationToken);
+	}
+
+	/// <summary>
+	/// Gets a ticket by its ID and user ID asynchronously.
+	/// </summary>
+	/// <param name="ticketId"></param>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<Ticket?> GetByTicketIdAsync(int ticketId, string userId, CancellationToken cancellationToken) {
+
+		return await _db.Tickets
+			.Where(t => t.TicketId == ticketId && t.CreatedByUserId == userId)
+			.FirstOrDefaultAsync(cancellationToken);
 	}
 
 	/// <summary>
@@ -63,6 +86,7 @@ public class TicketRepository : ITicketRepository {
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	public async Task<Ticket> CreateAsync(Ticket ticket, CancellationToken cancellationToken) {
+
 		_db.Add(ticket);
 		await _unitOfWork.SaveChangesAsync(cancellationToken);
 		return await Task.FromResult(ticket);

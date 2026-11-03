@@ -44,13 +44,30 @@ public class TicketService : ITicketService {
 
 		var tickets = isOperator
 			? await _ticketRepository.GetAllAsync(cancellationToken)
-			: await _ticketRepository.GetAllByUserIdAsync(userId!, cancellationToken);
+			: await _ticketRepository.GetAllAsync(userId!, cancellationToken);
 
 		return tickets.Select(t => _mapper.MapToSimpleDto(t)).ToList();
 	}
 
-	public Task<TicketSimpleResponseDto> GetByTicketIdAsync(int id) {
-		throw new NotImplementedException();
+	/// <summary>
+	/// Gets a ticket by its ID asynchronously.
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="isOperator"></param>
+	/// <param name="userId"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	/// <exception cref="ArgumentException"></exception>
+	public async Task<TicketResponseDto?> GetByTicketIdAsync(int id, bool isOperator, string? userId, CancellationToken cancellationToken) {
+
+		if (!isOperator && string.IsNullOrEmpty(userId))
+			throw new ArgumentException("User ID must be provided for non-operator users.");
+
+		var ticket = isOperator
+			?  await _ticketRepository.GetByTicketIdAsync(id, cancellationToken)
+			: await _ticketRepository.GetByTicketIdAsync(id, userId!, cancellationToken);
+
+		return ticket != null ? _mapper.MapToDto(ticket) : null;
 	}
 
 	/// <summary>
