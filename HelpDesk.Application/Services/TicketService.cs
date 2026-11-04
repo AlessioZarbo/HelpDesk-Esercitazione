@@ -93,11 +93,12 @@ public class TicketService : ITicketService {
 	/// <summary>
 	/// Sets the status of a ticket asynchronously.
 	/// </summary>
+	/// <param name="operatorId"></param>
 	/// <param name="ticketId"></param>
 	/// <param name="ticketStatusUpdateRequestDto"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public async Task<TicketResponseDto> SetStatusAsync(int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken) {
+	public async Task<TicketResponseDto> SetStatusAsync(string? operatorId, int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken) {
 
 		if (ticketId <= 0)
 			throw new ArgumentException("Ticket ID must be greater than zero.");
@@ -106,10 +107,15 @@ public class TicketService : ITicketService {
 		if (ticket == null)
 			throw new ArgumentNullException(nameof(ticket));
 
-		if (ticket.Status == Status.Open && ticketStatusUpdateRequestDto.Status == Status.Closed )
-			throw new ArgumentException("Cannot set status to Closed.");
+		CheckStatusAvailability(ticket.Status, ticketStatusUpdateRequestDto.Status);
 
-		await _ticketRepository.SetStatusAsync(ticket, ticketStatusUpdateRequestDto.Status, cancellationToken);
+		if (ticketStatusUpdateRequestDto.Status == Status.InProgress && !string.IsNullOrEmpty(operatorId))
+			ticket.AssignedToUserId = operatorId;
+		else
+			throw new ArgumentException("Cannot set status to InProgress.");
+
+		ticket.Status = ticketStatusUpdateRequestDto.Status;
+		await _ticketRepository.SetStatusAsync(ticket, cancellationToken);
 		return _mapper.MapToDto(ticket);
 	}
 
@@ -126,5 +132,30 @@ public class TicketService : ITicketService {
 		var content = exporter.Export(tickets);
 
 		return content;
+	}
+
+	/// <summary>
+	/// Checks the availability of a status update.
+	/// </summary>
+	/// <param name="ticketStatus"></param>
+	/// <param name="dtoStatus"></param>
+	public static void CheckStatusAvailability(Status ticketStatus, Status dtoStatus) {
+
+		if (ticketStatus == Status.Closed)
+			throw new ArgumentException("Cannot update status of a closed ticket.");
+		if (ticketStatus == dtoStatus)
+			throw new ArgumentException("Cannot update status of a ticket to the same status.");
+		if (ticketStatus == Status.Open && dtoStatus == Status.Closed )
+			throw new ArgumentException("Cannot set status to Closed.");
+		if (ticketStatus == Status.Open && dtoStatus == Status.Resolved)
+			throw new ArgumentException("Cannot set status to Resolved.");
+		if (ticketStatus == Status.Resolved && dtoStatus == Status.Closed)
+			throw new ArgumentException("Cannot set status to Closed.");
+		if (ticketStatus == Status.InProgress && dtoStatus == Status.Open)
+			throw new ArgumentException("Cannot set status to Open.");
+		if (ticketStatus == Status.Resolved && dtoStatus == Status.InProgress)
+			throw new ArgumentException("Cannot set status to InProgress.");
+		if (ticketStatus == Status.Resolved && dtoStatus == Status.Open)
+			throw new ArgumentException("Cannot set status to Open.");
 	}
 }

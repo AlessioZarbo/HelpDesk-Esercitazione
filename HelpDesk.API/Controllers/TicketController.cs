@@ -93,7 +93,8 @@ public class TicketController : ControllerBase {
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<IActionResult> UpdateTicketStatusAsync([FromRoute] int id, [FromBody] TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken) {
 
-		var ticket = await _ticketService.SetStatusAsync(id, ticketStatusUpdateRequestDto, cancellationToken);
+		var operatorId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+		var ticket = await _ticketService.SetStatusAsync(operatorId, id, ticketStatusUpdateRequestDto, cancellationToken);
 		return Ok(ticket);
 	}
 

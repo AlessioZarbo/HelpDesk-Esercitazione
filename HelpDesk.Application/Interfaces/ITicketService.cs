@@ -40,11 +40,12 @@ public interface ITicketService {
 	/// <summary>
 	/// Sets the status of a ticket asynchronously
 	/// </summary>
+	/// <param name="operatorId"></param>
 	/// <param name="ticketId"></param>
 	/// <param name="ticketStatusUpdateRequestDto"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<TicketResponseDto> SetStatusAsync(int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken);
+	Task<TicketResponseDto> SetStatusAsync(string? operatorId, int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Exports tickets in the specified format asynchronously.

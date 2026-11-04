@@ -96,12 +96,10 @@ public class TicketRepository : ITicketRepository {
 	/// Sets the status of a ticket asynchronously.
 	/// </summary>
 	/// <param name="ticket"></param>
-	/// <param name="status"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public async Task<Ticket> SetStatusAsync(Ticket ticket, Status status, CancellationToken cancellationToken) {
+	public async Task<Ticket> SetStatusAsync(Ticket ticket, CancellationToken cancellationToken) {
 
-		ticket.Status = status;
 		_db.Update(ticket);
 		await _unitOfWork.SaveChangesAsync(cancellationToken);
 		return await Task.FromResult(ticket);
