@@ -10,7 +10,7 @@ namespace HelpDesk.API.Controllers;
 /// Represents the controller responsible for handling ticket-related API requests in the HelpDesk system.
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/tickets")]
 [Authorize]
 public class TicketController : ControllerBase {
 
@@ -95,5 +95,22 @@ public class TicketController : ControllerBase {
 
 		var ticket = await _ticketService.SetStatusAsync(id, ticketStatusUpdateRequestDto, cancellationToken);
 		return Ok(ticket);
+	}
+
+	/// <summary>
+	/// Exports ticket data in a specific format.
+	/// </summary>
+	/// <param name="format"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	[HttpGet]
+	[Route("export")]
+	[Authorize(Roles = "Operator")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> ExportAsync([FromQuery] string format, CancellationToken cancellationToken) {
+
+		var content = await _ticketService.ExportAsync(format, cancellationToken);
+		return Ok(content);
 	}
 }

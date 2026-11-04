@@ -1,4 +1,5 @@
 using HelpDesk.Application.Dto.Ticket;
+using HelpDesk.Application.Exporter;
 using HelpDesk.Application.Mapper;
 using HelpDesk.Domain.Entities;
 using HelpDesk.Domain.Enums;
@@ -110,5 +111,20 @@ public class TicketService : ITicketService {
 
 		await _ticketRepository.SetStatusAsync(ticket, ticketStatusUpdateRequestDto.Status, cancellationToken);
 		return _mapper.MapToDto(ticket);
+	}
+
+	/// <summary>
+	/// Exports tickets in the specified format asynchronously.
+	/// </summary>
+	/// <param name="format"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<string> ExportAsync(string format, CancellationToken cancellationToken) {
+
+		var exporter = TicketExporterFactory.Create(format);
+		var tickets = await _ticketRepository.GetAllAsync(cancellationToken);
+		var content = exporter.Export(tickets);
+
+		return content;
 	}
 }

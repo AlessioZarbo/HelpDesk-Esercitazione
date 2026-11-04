@@ -5,8 +5,8 @@
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.AssemblyInfoInputs.cache
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.AssemblyInfo.cs
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.csproj.CoreCompileInputs.cache
+/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.sourcelink.json
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.dll
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/refint/HelpDesk.Domain.dll
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.pdb
 /Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/ref/HelpDesk.Domain.dll
-/Users/alessiozarbo/src/dotnet/HelpDesk-Auth/src/HelpDesk/HelpDesk.Domain/obj/Debug/net10.0/HelpDesk.Domain.sourcelink.json
