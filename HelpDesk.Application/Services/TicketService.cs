@@ -6,6 +6,7 @@ using HelpDesk.Domain.Entities;
 using HelpDesk.Domain.Enums;
 using HelpDesk.Domain.Interfaces;
 using HelpDesk.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HelpDesk.Application.Services;
 
@@ -22,14 +23,21 @@ public class TicketService : ITicketService {
 	private readonly TicketMapper _mapper;
 
 	/// <summary>
+	/// The logger used for logging information and errors related to ticket operations.
+	/// </summary>
+	private readonly ILogger<TicketService> _logger;
+
+	/// <summary>
 	/// Initializes a new instance of the <see cref="TicketService"/> class with the specified ticket repository.
 	/// </summary>
 	/// <param name="ticketRepository"></param>
 	/// <param name="mapper"></param>
-	public TicketService(ITicketRepository ticketRepository, TicketMapper mapper) {
+	/// <param name="logger"></param>
+	public TicketService(ITicketRepository ticketRepository, TicketMapper mapper, ILogger<TicketService> logger) {
 
 		_ticketRepository = ticketRepository;
 		_mapper = mapper;
+		_logger = logger;
 	}
 
 	/// <summary>
@@ -72,10 +80,7 @@ public class TicketService : ITicketService {
 			?  await _ticketRepository.GetByTicketIdAsync(ticketId, cancellationToken)
 			: await _ticketRepository.GetByTicketIdAsync(ticketId, userId!, cancellationToken);
 
-		if (ticket == null)
-			throw new NotFoundException(nameof(ticket), ticketId);
-
-		return _mapper.MapToDto(ticket);
+		return ticket == null ? throw new NotFoundException(nameof(ticket), ticketId) : _mapper.MapToDto(ticket);
 	}
 
 	/// <summary>
@@ -88,6 +93,8 @@ public class TicketService : ITicketService {
 	public async Task<TicketResponseDto> CreateAsync(TicketRequestDto ticket, string? userId, CancellationToken cancellationToken) {
 
 		var ticketResponse = await _ticketRepository.CreateAsync(_mapper.MapToEntity(ticket, userId), cancellationToken);
+
+		_logger.LogInformation($"Ticket created: {ticketResponse.TicketId} - {ticketResponse.Title}");
 		return _mapper.MapToDto(ticketResponse);
 	}
 
@@ -117,6 +124,8 @@ public class TicketService : ITicketService {
 
 		ticket.Status = ticketStatusUpdateRequestDto.Status;
 		await _ticketRepository.SetStatusAsync(ticket, cancellationToken);
+
+		_logger.LogInformation($"Ticket status updated: {ticketId} - {ticket.Status}");
 		return _mapper.MapToDto(ticket);
 	}
 
@@ -132,6 +141,7 @@ public class TicketService : ITicketService {
 		var tickets = await _ticketRepository.GetAllAsync(cancellationToken);
 		var content = exporter.Export(tickets);
 
+		_logger.LogInformation($"Tickets exported in {format} format.");
 		return content;
 	}
 
