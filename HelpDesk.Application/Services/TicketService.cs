@@ -1,4 +1,5 @@
 using HelpDesk.Application.Dto.Ticket;
+using HelpDesk.Application.Exceptions;
 using HelpDesk.Application.Exporter;
 using HelpDesk.Application.Mapper;
 using HelpDesk.Domain.Entities;
@@ -41,7 +42,7 @@ public class TicketService : ITicketService {
 	public async Task<List<TicketSimpleResponseDto>> GetAllAsync(bool isOperator, string? userId, CancellationToken cancellationToken) {
 
 		if (!isOperator && string.IsNullOrEmpty(userId))
-			throw new ArgumentException("User ID must be provided for non-operator users.");
+			throw new InvalidDataException("User ID must be provided for non-operator users.");
 
 		var tickets = isOperator
 			? await _ticketRepository.GetAllAsync(cancellationToken)
@@ -62,17 +63,17 @@ public class TicketService : ITicketService {
 	public async Task<TicketResponseDto> GetByTicketIdAsync(int ticketId, bool isOperator, string? userId, CancellationToken cancellationToken) {
 
 		if (ticketId <= 0)
-			throw new ArgumentException("Ticket ID must be greater than zero.");
+			throw new InvalidDataException("Ticket ID must be greater than zero.");
 
 		if (!isOperator && string.IsNullOrEmpty(userId))
-			throw new ArgumentException("User ID must be provided for non-operator users.");
+			throw new InvalidDataException("User ID must be provided for non-operator users.");
 
 		var ticket = isOperator
 			?  await _ticketRepository.GetByTicketIdAsync(ticketId, cancellationToken)
 			: await _ticketRepository.GetByTicketIdAsync(ticketId, userId!, cancellationToken);
 
 		if (ticket == null)
-			throw new ArgumentNullException(nameof(ticket));
+			throw new NotFoundException(nameof(ticket), ticketId);
 
 		return _mapper.MapToDto(ticket);
 	}
@@ -101,18 +102,18 @@ public class TicketService : ITicketService {
 	public async Task<TicketResponseDto> SetStatusAsync(string? operatorId, int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken) {
 
 		if (ticketId <= 0)
-			throw new ArgumentException("Ticket ID must be greater than zero.");
+			throw new InvalidDataException("Ticket ID must be greater than zero.");
 
 		var ticket = await _ticketRepository.GetByTicketIdAsync(ticketId, cancellationToken);
 		if (ticket == null)
-			throw new ArgumentNullException(nameof(ticket));
+			throw new NotFoundException(nameof(ticket), ticketId);
 
 		CheckStatusAvailability(ticket.Status, ticketStatusUpdateRequestDto.Status);
 
 		if (ticketStatusUpdateRequestDto.Status == Status.InProgress && !string.IsNullOrEmpty(operatorId))
 			ticket.AssignedToUserId = operatorId;
 		else
-			throw new ArgumentException("Cannot set status to InProgress.");
+			throw new InvalidDataException("Cannot set status to InProgress.");
 
 		ticket.Status = ticketStatusUpdateRequestDto.Status;
 		await _ticketRepository.SetStatusAsync(ticket, cancellationToken);
@@ -142,20 +143,20 @@ public class TicketService : ITicketService {
 	public static void CheckStatusAvailability(Status ticketStatus, Status dtoStatus) {
 
 		if (ticketStatus == Status.Closed)
-			throw new ArgumentException("Cannot update status of a closed ticket.");
+			throw new ConflictException("Cannot update status of a closed ticket.");
 		if (ticketStatus == dtoStatus)
-			throw new ArgumentException("Cannot update status of a ticket to the same status.");
+			throw new ConflictException("Cannot update status of a ticket to the same status.");
 		if (ticketStatus == Status.Open && dtoStatus == Status.Closed )
-			throw new ArgumentException("Cannot set status to Closed.");
+			throw new ConflictException("Cannot set status to Closed.");
 		if (ticketStatus == Status.Open && dtoStatus == Status.Resolved)
-			throw new ArgumentException("Cannot set status to Resolved.");
+			throw new ConflictException("Cannot set status to Resolved.");
 		if (ticketStatus == Status.Resolved && dtoStatus == Status.Closed)
-			throw new ArgumentException("Cannot set status to Closed.");
+			throw new ConflictException("Cannot set status to Closed.");
 		if (ticketStatus == Status.InProgress && dtoStatus == Status.Open)
-			throw new ArgumentException("Cannot set status to Open.");
+			throw new ConflictException("Cannot set status to Open.");
 		if (ticketStatus == Status.Resolved && dtoStatus == Status.InProgress)
-			throw new ArgumentException("Cannot set status to InProgress.");
+			throw new ConflictException("Cannot set status to InProgress.");
 		if (ticketStatus == Status.Resolved && dtoStatus == Status.Open)
-			throw new ArgumentException("Cannot set status to Open.");
+			throw new ConflictException("Cannot set status to Open.");
 	}
 }
