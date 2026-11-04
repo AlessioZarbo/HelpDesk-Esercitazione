@@ -48,8 +48,9 @@ public interface ITicketRepository {
 	/// <summary>
 	/// Sets the status of a ticket asynchronously
 	/// </summary>
-	/// <param name="ticketId"></param>
+	/// <param name="ticket"></param>
 	/// <param name="status"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	public Task SetStatusAsync(string ticketId, Status status);
+	public Task<Ticket> SetStatusAsync(Ticket ticket, Status status, CancellationToken cancellationToken);
 }

@@ -26,7 +26,7 @@ public interface ITicketService {
 	/// <param name="userId"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<TicketResponseDto?> GetByTicketIdAsync(int id, bool isOperator, string? userId, CancellationToken cancellationToken);
+	Task<TicketResponseDto> GetByTicketIdAsync(int id, bool isOperator, string? userId, CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Creates a new ticket asynchronously
@@ -41,7 +41,8 @@ public interface ITicketService {
 	/// Sets the status of a ticket asynchronously
 	/// </summary>
 	/// <param name="ticketId"></param>
-	/// <param name="status"></param>
+	/// <param name="ticketStatusUpdateRequestDto"></param>
+	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task SetStatusAsync(string ticketId, Status status);
+	Task<TicketResponseDto> SetStatusAsync(int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken);
 }

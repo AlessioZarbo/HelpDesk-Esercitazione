@@ -38,11 +38,11 @@ public class TicketController : ControllerBase {
 	[Authorize(Roles = "User")]
 	[ProducesResponseType(StatusCodes.Status201Created)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<IActionResult> CreateAsync(TicketRequestDto ticketRequestDto, CancellationToken cancellationToken) {
+	public async Task<IActionResult> CreateAsync([FromBody] TicketRequestDto ticketRequestDto, CancellationToken cancellationToken) {
 
 		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 		var ticket = await _ticketService.CreateAsync(ticketRequestDto, userId, cancellationToken);
-		return StatusCode(201, ticket); // TODO Implementare la parte relativa all'header Location: /api/v1/tickets/42 (REQUISITI: GetById funzionante)
+		return CreatedAtAction(nameof(GetByTicketIdAsync), new { id = ticket.Id }, ticket);
 	}
 
 	/// <summary>
@@ -70,12 +70,30 @@ public class TicketController : ControllerBase {
 	[Authorize(Roles = "User,Operator")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[ActionName(nameof(GetByTicketIdAsync))]
 	public async Task<IActionResult> GetByTicketIdAsync([FromRoute] int id, CancellationToken cancellationToken) {
 
 		var isOperator = User.IsInRole("Operator");
 		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
-		var ticket = await _ticketService.GetByTicketIdAsync(id, isOperator, userId, cancellationToken);
+		return Ok(await _ticketService.GetByTicketIdAsync(id, isOperator, userId, cancellationToken));
+	}
 
-		return ticket != null ? Ok(ticket) : NotFound();
+	/// <summary>
+	/// Updates the status of a ticket.
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="ticketStatusUpdateRequestDto"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	[HttpPatch("{id:int}/status")]
+	[Authorize(Roles = "Operator")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status409Conflict)]
+	public async Task<IActionResult> UpdateTicketStatusAsync([FromRoute] int id, [FromBody] TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken) {
+
+		var ticket = await _ticketService.SetStatusAsync(id, ticketStatusUpdateRequestDto, cancellationToken);
+		return Ok(ticket);
 	}
 }

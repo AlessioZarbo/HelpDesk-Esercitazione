@@ -52,22 +52,28 @@ public class TicketService : ITicketService {
 	/// <summary>
 	/// Gets a ticket by its ID asynchronously.
 	/// </summary>
-	/// <param name="id"></param>
+	/// <param name="ticketId"></param>
 	/// <param name="isOperator"></param>
 	/// <param name="userId"></param>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	/// <exception cref="ArgumentException"></exception>
-	public async Task<TicketResponseDto?> GetByTicketIdAsync(int id, bool isOperator, string? userId, CancellationToken cancellationToken) {
+	public async Task<TicketResponseDto> GetByTicketIdAsync(int ticketId, bool isOperator, string? userId, CancellationToken cancellationToken) {
+
+		if (ticketId <= 0)
+			throw new ArgumentException("Ticket ID must be greater than zero.");
 
 		if (!isOperator && string.IsNullOrEmpty(userId))
 			throw new ArgumentException("User ID must be provided for non-operator users.");
 
 		var ticket = isOperator
-			?  await _ticketRepository.GetByTicketIdAsync(id, cancellationToken)
-			: await _ticketRepository.GetByTicketIdAsync(id, userId!, cancellationToken);
+			?  await _ticketRepository.GetByTicketIdAsync(ticketId, cancellationToken)
+			: await _ticketRepository.GetByTicketIdAsync(ticketId, userId!, cancellationToken);
 
-		return ticket != null ? _mapper.MapToDto(ticket) : null;
+		if (ticket == null)
+			throw new ArgumentNullException(nameof(ticket));
+
+		return _mapper.MapToDto(ticket);
 	}
 
 	/// <summary>
@@ -83,7 +89,26 @@ public class TicketService : ITicketService {
 		return _mapper.MapToDto(ticketResponse);
 	}
 
-	public Task SetStatusAsync(string ticketId, Status status) {
-		throw new NotImplementedException();
+	/// <summary>
+	/// Sets the status of a ticket asynchronously.
+	/// </summary>
+	/// <param name="ticketId"></param>
+	/// <param name="ticketStatusUpdateRequestDto"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	public async Task<TicketResponseDto> SetStatusAsync(int ticketId, TicketStatusUpdateRequestDto ticketStatusUpdateRequestDto, CancellationToken cancellationToken) {
+
+		if (ticketId <= 0)
+			throw new ArgumentException("Ticket ID must be greater than zero.");
+
+		var ticket = await _ticketRepository.GetByTicketIdAsync(ticketId, cancellationToken);
+		if (ticket == null)
+			throw new ArgumentNullException(nameof(ticket));
+
+		if (ticket.Status == Status.Open && ticketStatusUpdateRequestDto.Status == Status.Closed )
+			throw new ArgumentException("Cannot set status to Closed.");
+
+		await _ticketRepository.SetStatusAsync(ticket, ticketStatusUpdateRequestDto.Status, cancellationToken);
+		return _mapper.MapToDto(ticket);
 	}
 }
