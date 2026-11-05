@@ -6,6 +6,8 @@ WORKDIR /App
 
 # Copia i file di progetto e ripristina le dipendenze qualora vengano modificate
 # Il blocco partirà qui solo se i file di progetto vengono modificati, evitando di ricostruire tutto ogni volta
+COPY ./nuget.config ./
+COPY ./libs/ ./libs/
 COPY ./HelpDesk.sln ./
 COPY ./HelpDesk.API/HelpDesk.API.csproj ./HelpDesk.API/
 COPY ./HelpDesk.Application/HelpDesk.Application.csproj ./HelpDesk.Application/
