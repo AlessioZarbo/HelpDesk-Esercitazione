@@ -1,3 +1,4 @@
+using HelpDesk.Application.Exceptions;
 using HelpDesk.Domain.Enums;
 using HelpDesk.Domain.Interfaces;
 
@@ -70,15 +71,15 @@ public class Ticket {
 		string? userId,
 		IFixHoursProvider fixHours)
 	{
-		if (string.IsNullOrWhiteSpace(title)) {
-			throw new ArgumentException("Title cannot be null or empty.", nameof(title));
-		}
-		if (string.IsNullOrWhiteSpace(description)) {
-			throw new ArgumentException("Description cannot be null or empty.", nameof(description));
-		}
-		if (string.IsNullOrWhiteSpace(userId)) {
-			throw new ArgumentException("User ID cannot be null or empty.", nameof(userId));
-		}
+		if (string.IsNullOrWhiteSpace(title))
+			throw new NotValidDataException(nameof(title));
+
+		if (string.IsNullOrWhiteSpace(description))
+			throw new NotValidDataException(nameof(description));
+
+		if (string.IsNullOrWhiteSpace(userId))
+			throw new NotValidDataException(nameof(userId));
+
 
 		// Calculate the due date based on the priority and fix hours
 		var fixHour = fixHours.GetHours(priority);

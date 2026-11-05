@@ -78,6 +78,10 @@
             "Scalar.AspNetCore": {
               "target": "Package",
               "version": "[2.18.7, )"
+            },
+            "SharpGrip.FluentValidation.AutoValidation.Mvc": {
+              "target": "Package",
+              "version": "[2.0.0, )"
             }
           },
           "imports": [
@@ -567,6 +571,10 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[12.2.0, )"
+            },
             "Microsoft.Extensions.Configuration.Abstractions": {
               "target": "Package",
               "version": "[10.0.14, )"

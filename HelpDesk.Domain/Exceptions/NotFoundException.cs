@@ -10,5 +10,5 @@ public class NotFoundException : Exception {
 	/// </summary>
 	/// <param name="entityName"></param>
 	/// <param name="id"></param>
-	public NotFoundException(Type entityName, int id) : base($"{entityName.Name} with id: {id} was not found") { }
+	public NotFoundException(string entityName, int id) : base($"{entityName} with id: {id} was not found") { }
 }

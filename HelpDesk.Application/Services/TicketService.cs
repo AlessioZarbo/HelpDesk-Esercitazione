@@ -94,7 +94,10 @@ public class TicketService : ITicketService {
 
 		var ticketResponse = await _ticketRepository.CreateAsync(_mapper.MapToEntity(ticket, userId), cancellationToken);
 
-		_logger.LogInformation($"Ticket created: {ticketResponse.TicketId} - {ticketResponse.Title}");
+		_logger.LogInformation(
+			"Ticket created {TicketId} by {UserId}",
+			ticketResponse.TicketId,
+			userId);
 		return _mapper.MapToDto(ticketResponse);
 	}
 
@@ -117,15 +120,22 @@ public class TicketService : ITicketService {
 
 		CheckStatusAvailability(ticket.Status, ticketStatusUpdateRequestDto.Status);
 
-		if (ticketStatusUpdateRequestDto.Status == Status.InProgress && !string.IsNullOrEmpty(operatorId))
-			ticket.AssignedToUserId = operatorId;
-		else
-			throw new InvalidDataException("Cannot set status to InProgress.");
+		if (ticketStatusUpdateRequestDto.Status == Status.InProgress)
+		{
+			if (string.IsNullOrEmpty(operatorId))
+				throw new InvalidDataException("Operator ID must be provided.");
+
+			ticket.AssignedToUserId ??= operatorId;
+		}
 
 		ticket.Status = ticketStatusUpdateRequestDto.Status;
 		await _ticketRepository.SetStatusAsync(ticket, cancellationToken);
 
-		_logger.LogInformation($"Ticket status updated: {ticketId} - {ticket.Status}");
+		_logger.LogInformation(
+			"Ticket status updated {TicketId} to {Status} by {OperatorId}",
+			ticketId,
+			ticket.Status,
+			operatorId);
 		return _mapper.MapToDto(ticket);
 	}
 
@@ -141,7 +151,7 @@ public class TicketService : ITicketService {
 		var tickets = await _ticketRepository.GetAllAsync(cancellationToken);
 		var content = exporter.Export(tickets);
 
-		_logger.LogInformation($"Tickets exported in {format} format.");
+		_logger.LogInformation("Tickets exported in {Format} format", format);
 		return content;
 	}
 
@@ -152,21 +162,16 @@ public class TicketService : ITicketService {
 	/// <param name="dtoStatus"></param>
 	public static void CheckStatusAvailability(Status ticketStatus, Status dtoStatus) {
 
-		if (ticketStatus == Status.Closed)
-			throw new ConflictException("Cannot update status of a closed ticket.");
-		if (ticketStatus == dtoStatus)
-			throw new ConflictException("Cannot update status of a ticket to the same status.");
-		if (ticketStatus == Status.Open && dtoStatus == Status.Closed )
-			throw new ConflictException("Cannot set status to Closed.");
-		if (ticketStatus == Status.Open && dtoStatus == Status.Resolved)
-			throw new ConflictException("Cannot set status to Resolved.");
-		if (ticketStatus == Status.Resolved && dtoStatus == Status.Closed)
-			throw new ConflictException("Cannot set status to Closed.");
-		if (ticketStatus == Status.InProgress && dtoStatus == Status.Open)
-			throw new ConflictException("Cannot set status to Open.");
-		if (ticketStatus == Status.Resolved && dtoStatus == Status.InProgress)
-			throw new ConflictException("Cannot set status to InProgress.");
-		if (ticketStatus == Status.Resolved && dtoStatus == Status.Open)
-			throw new ConflictException("Cannot set status to Open.");
+		var isValidTransition = (ticketStatus, dtoStatus) switch
+		{
+			(Status.Open, Status.InProgress) => true,
+			(Status.InProgress, Status.Resolved) => true,
+			(Status.Resolved, Status.Closed) => true,
+			_ => false
+		};
+
+		if (!isValidTransition)
+			throw new ConflictException(
+				$"Invalid status transition from {ticketStatus} to {dtoStatus}.");
 	}
 }

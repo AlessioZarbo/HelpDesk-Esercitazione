@@ -28,13 +28,13 @@ public sealed class CsvTicketExporter : ITicketExporter {
 	/// <returns></returns>
 	public string Export(List<Ticket> tickets) {
 
-		const string header = "ticketId,title,priority,status,createdAt,dueDate";
+		const string header = "id,title,priority,status,dueDate";
 
 		var rows = tickets.Select(ticket => string.Join(",",
 			ticket.TicketId,
 			Escape(ticket.Title),
-			ticket.Status,
 			ticket.Priority,
+			ticket.Status,
 			ticket.DueDate.ToString("o")));
 
 		return string.Join("\n", new[] { header }.Concat(rows));
@@ -62,10 +62,10 @@ public sealed class JsonTicketExporter : ITicketExporter {
 	public string Export(List<Ticket> tickets) =>
 		JsonSerializer.Serialize(tickets.Select(ticket => new
 		{
-			ticketId = ticket.TicketId,
+			id = ticket.TicketId,
 			title = ticket.Title,
-			status = ticket.Status.ToString(),
 			priority = ticket.Priority.ToString(),
+			status = ticket.Status.ToString(),
 			dueDate = ticket.DueDate
 		}));
 }
@@ -82,7 +82,7 @@ public static class TicketExporterFactory {
 	/// <returns></returns>
 	/// <exception cref="NotSupportedException"></exception>
 	public static ITicketExporter Create(string format) =>
-		format.Trim().ToLowerInvariant() switch
+		(format ?? string.Empty).Trim().ToLowerInvariant() switch
 		{
 			"csv" => new CsvTicketExporter(),
 			"json" => new JsonTicketExporter(),

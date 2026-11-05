@@ -1,0 +1,36 @@
+# Stage Build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+# Crea la cartella di lavoro
+WORKDIR /App
+
+# Copia i file di progetto e ripristina le dipendenze qualora vengano modificate
+# Il blocco partirà qui solo se i file di progetto vengono modificati, evitando di ricostruire tutto ogni volta
+COPY ./HelpDesk.sln ./
+COPY ./HelpDesk.API/HelpDesk.API.csproj ./HelpDesk.API/
+COPY ./HelpDesk.Application/HelpDesk.Application.csproj ./HelpDesk.Application/
+COPY ./HelpDesk.Domain/HelpDesk.Domain.csproj ./HelpDesk.Domain/
+COPY ./HelpDesk.Infrastructure/HelpDesk.Infrastructure.csproj ./HelpDesk.Infrastructure/
+RUN dotnet restore 
+
+# Copia tutti i file e pubblica l'applicazione
+# il blocco partirà qui ogni volta che un file viene modificato, ma non ricostruirà le dipendenze (più veloce)
+COPY . ./
+
+# Crea la cartella finale pronta per essere eseguita nella path /App/out
+RUN dotnet publish ./HelpDesk.API/HelpDesk.API.csproj -c Release -o /App/out --no-restore
+
+# Stage Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /App
+
+# Copia i file pubblicati dallo stage di build
+COPY --from=build /App/out .
+
+# Imposta il comando di avvio dell'applicazione
+ENTRYPOINT ["dotnet", "HelpDesk.API.dll"]
+EXPOSE 8080
+
+
+# RUN apt-get update && apt-get install -y curl
+# HEALTHCHECK CMD curl --fail http://localhost:8080/healthz || exit 1ù

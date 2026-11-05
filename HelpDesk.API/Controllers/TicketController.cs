@@ -10,7 +10,7 @@ namespace HelpDesk.API.Controllers;
 /// Represents the controller responsible for handling ticket-related API requests in the HelpDesk system.
 /// </summary>
 [ApiController]
-[Route("api/tickets")]
+[Route("api/v1/tickets")]
 [Authorize]
 public class TicketController : ControllerBase {
 
@@ -69,6 +69,7 @@ public class TicketController : ControllerBase {
 	[HttpGet("{id:int}")]
 	[Authorize(Roles = "User,Operator")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	[ActionName(nameof(GetByTicketIdAsync))]
 	public async Task<IActionResult> GetByTicketIdAsync([FromRoute] int id, CancellationToken cancellationToken) {
