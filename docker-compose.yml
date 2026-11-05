@@ -1,0 +1,28 @@
+services:
+  helpdeskapi:
+    container_name: HelpDeskApi
+    image: ${DOCKER_REGISTRY-}helpdeskapi
+    build:
+      context: .
+      dockerfile: DockerFile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Docker: "Server=database,1433;Database=master;User Id=sa;Password=Password123!;TrustServerCertificate=True;"
+    ports:
+      - "5080:8080"
+    depends_on:
+      - database
+
+  database:
+    container_name: HelpDeskDb
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      MSSQL_SA_PASSWORD: Password123!
+      ACCEPT_EULA: Y
+    ports:
+      - "10433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+volumes:
+  mssql-data:

@@ -20,7 +20,7 @@ RUN dotnet restore
 COPY . ./
 
 # Crea la cartella finale pronta per essere eseguita nella path /App/out
-RUN dotnet publish ./HelpDesk.API/HelpDesk.API.csproj -c Release -o /App/out --no-restore
+RUN dotnet publish ./HelpDesk.API/HelpDesk.API.csproj -c Release -o /App/out
 
 # Stage Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
